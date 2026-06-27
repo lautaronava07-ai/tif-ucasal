@@ -1,36 +1,51 @@
-importar { Terminal } desde "@es-js/terminal"
-importar { obtenerJson } desde "https://desarrollo-aplicaciones.vercel.app/2024/code/obtener-json.js"
-importar { validarSecreto } desde "https://desarrollo-aplicaciones.vercel.app/2024/code/validar-secreto.js"
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TIF - Cotización Dólar Blue</title>
+</head>
+<body>
+  <!-- Cargador de EsJS para que el navegador entienda el código en español -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@es-js/terminal/dist/terminal.js"></script>
+  
+  <script type="esjs">
+    importar { Terminal } desde "@es-js/terminal"
+    importar { obtenerJson } desde "https://desarrollo-aplicaciones.vercel.app/2024/code/obtener-json.js"
+    importar { validarSecreto } desde "https://desarrollo-aplicaciones.vercel.app/2024/code/validar-secreto.js"
 
-asincrono funcion inicio() {
-  Terminal.escribir("Hola! Ingresa la palabra secreta:")
+    asincrono funcion inicio() {
+      Terminal.escribir("Hola! Ingresa la palabra secreta:")
 
-  var secreto = esperar Terminal.leer()
+      var secreto = esperar Terminal.leer()
 
-  var dni = "43948444"
+      var dni = "43948444"
 
-  si (esperar validarSecreto(dni, secreto)) {
-    esperar mostrarCotizacion()
-  } sino {
-    Terminal.escribir("Palabra secreta inválida")
-  }
+      si (esperar validarSecreto(dni, secreto)) {
+        esperar mostrarCotizacion()
+      } sino {
+        Terminal.escribir("Palabra secreta inválida")
+      }
 
-  Terminal.escribir("Presiona ENTER para volver a ingresar")
+      Terminal.escribir("Presiona ENTER para volver a ingresar")
+      esperar Terminal.leerEnter()
+      Terminal.limpiar()
+      inicio()
+    }
 
-  esperar Terminal.leerEnter()
+    asincrono funcion mostrarCotizacion() {
+      Terminal.escribir('Consultando cotización actual...')
+      
+      // Proceso: Interacción con servicio externo [1, 5]
+      const dolarBlue = esperar obtenerJson('https://dolarapi.com/v1/dolares/blue')
 
-  Terminal.limpiar()
+      // Salida: Se muestran los datos del objeto JSON [2, 6]
+      Terminal.escribir('Cotización del Dólar Blue:')
+      Terminal.escribir('Valor de compra: $' + dolarBlue.compra)
+      Terminal.escribir('Valor de venta: $' + dolarBlue.venta)
+    }
 
-  inicio()
-}
-
-asincrono funcion mostrarCotizacion() {
-  Terminal.escribir('Cotización del Dolar Blue:')
-
-  const dolarBlue = esperar obtenerJson('https://dolarapi.com/v1/dolares/blue')
-
-  Terminal.escribir('Valor de compra: $' + dolarBlue.compra)
-  Terminal.escribir('Valor de venta: $' + dolarBlue.venta)
-}
-
-inicio()
+    inicio()
+  </script>
+</body>
+</html>
