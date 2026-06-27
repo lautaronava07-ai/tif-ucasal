@@ -3,46 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <title>TIF - Cotización Dólar</title>
-</head>
-<body>
   <!-- Cargador de la Terminal de EsJS -->
   <script type="module" src="https://cdn.jsdelivr.net/npm/@es-js/terminal/dist/terminal.js"></script>
-  
+</head>
+<body>
   <script type="esjs">
-    /** 
-     * Tu código EsJS probado en el editor va aquí.
-     * Mantenemos la lógica de entrada, proceso y salida [8].
+    /**
+     * Lógica pura en EsJS - Copiada de tu editor funcional
      **/
-    importar { Terminal } desde "@es-js/terminal"
-    importar { obtenerJson } desde "https://desarrollo-aplicaciones.vercel.app/2024/code/obtener-json.js"
-    importar { validarSecreto } desde "https://desarrollo-aplicaciones.vercel.app/2024/code/validar-secreto.js"
+    importar { validarSecreto } desde 'https://desarrollo-aplicaciones.vercel.app/2024/code/validar-secreto.js'
+    importar { obtenerJson } desde 'https://desarrollo-aplicaciones.vercel.app/2024/code/obtener-json.js'
 
-    asincrono funcion inicio() {
-      Terminal.escribir("Hola! Ingresa la palabra secreta:")
-      var secreto = esperar Terminal.leer()
-      var dni = "43948444"
+    // Tu DNI según nuestra charla
+    const dni = '43948444'; 
 
-      // Estructura selectiva para validar confidencialidad [9, 10]
-      si (esperar validarSecreto(dni, secreto)) {
-        esperar mostrarCotizacion()
-      } sino {
-        Terminal.escribir("Palabra secreta inválida")
-      }
+    Terminal.escribir('Hola, ingresa tu palabra secreta:');
 
-      Terminal.escribir("Presiona ENTER para volver a intentar")
-      esperar Terminal.leerEnter()
-      Terminal.limpiar()
-      inicio()
+    // Entrada de datos [5]
+    const palabraSecreta = esperar Terminal.leer();
+
+    // Proceso y Estructura selectiva [6]
+    si (esperar validarSecreto(dni, palabraSecreta)) {
+        Terminal.escribir('Consultando cotización...');
+        
+        const dolarBlue = esperar obtenerJson('https://dolarapi.com/v1/dolares/blue')
+        
+        // Salida de datos [5]
+        Terminal.escribir('Cotización del Dolar Blue:');
+        Terminal.escribir('Valor de compra: $' + dolarBlue.compra);
+        Terminal.escribir('Valor de venta: $' + dolarBlue.venta);
+    } sino {
+        Terminal.escribir('La Palabra Secreta es incorrecta');
     }
-
-    asincrono funcion mostrarCotizacion() {
-      Terminal.escribir('Consultando cotización...')
-      const dolarBlue = esperar obtenerJson('https://dolarapi.com/v1/dolares/blue')
-      Terminal.escribir('Valor de compra: $' + dolarBlue.compra)
-      Terminal.escribir('Valor de venta: $' + dolarBlue.venta)
-    }
-
-    inicio()
   </script>
 </body>
 </html>
